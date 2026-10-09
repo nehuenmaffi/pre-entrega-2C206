@@ -1,4 +1,20 @@
-productos = [] # [[], [], []]
+productos = [
+    {
+        "nombre": "Pelota",
+        "categoria": "Futbol",
+        "precio": 1200
+    },
+    {
+        "nombre": "Casco",
+        "categoria": "Motociclismo",
+        "precio": 1500
+    },
+    {
+        "nombre": "Palos",
+        "categoria": "Hockey",
+        "precio": 950
+    }
+]
 
 while True:
     print("="*40)
@@ -7,28 +23,30 @@ while True:
     print("""
     1. Agregar productos
     2. Mostrar productos
-    3. Mostrar producto
+    3. Buscar producto
     4. Eliminar producto
     5. Salir
      """)
 
-    opcion = input("Elegí una opción del 1 al 5:").strip()
+    opcion = input("Elegí una opción del 1 al 5: ").strip()
     
     if opcion == "1":
         print("--- Agregar producto ---")
-        # validacion de los datos agregados
         nombre = input("Ingrese el nombre del producto: ").strip()
         while nombre == "":
             print("El nombre del producto no puede estar vacío.")
             nombre = input("Ingrese el nombre del producto: ").strip()
+
         categoria = input("Ingrese la categoria a la que pertenece el producto: ").strip()
         while categoria == "":
-                    print("La categoría del producto no puede estar vacía.")
-                    categoria = input("Ingrese la categoria ala que pertenece el producto: ").strip()
+            print("La categoría del producto no puede estar vacía.")
+            categoria = input("Ingrese la categoria a la que pertenece el producto: ").strip()
+
         precio_str = input("Ingrese el precio del producto (sin centavos): ").strip()
         while not precio_str.isdigit():
             print("El precio debe ser un número entero.")
             precio_str = input("Ingrese el precio del producto (sin centavos): ").strip()
+
         precio = int(precio_str)
 
         datos = {
@@ -42,21 +60,52 @@ while True:
     
     elif opcion == "2":
         print("--- Productos ingresados ---")
-        # [[], [], []]
         if len(productos) == 0:
             print("No hay productos ingresados.")
         else:
-            for i, producto in range(len(productos)): # 3 -> i = 0, I = 1, i = 2
-                print(f"Producto {i+1}:")
-                print(f"Nombre: {producto['nombre']}")
-                print(f"Categoría: {producto['categoria']}")
-                print(f"Precio: ${producto['precio']}")
-                print("-"*20)
-
+            for i in range(len(productos)):
+                print(f"ID: {i+1}\n- Nombre: {productos[i]['nombre']}\n- Categoría: {productos[i]['categoria']}\n- Precio: ${productos[i]['precio']}")
+                print("-" * 20)
+                
     elif opcion == "3":
+        print("--- Buscar producto ---")
+        if len(productos) == 0:
+            print("No hay productos ingresados.")
+        else:
+            busqueda = input("Ingresá el producto que querés buscar: ").strip().lower()
+
+            while busqueda == "":
+                print("Tenés que ingresar un nombre de producto para buscar.")
+                busqueda = input("Ingresá el producto que querés buscar: ").strip().lower()
+
+            encontrado = 0
+            for i in range(len(productos)):
+                if busqueda in productos[i]['nombre'].lower():
+                    print(f"ID: {i+1}\n- Nombre: {productos[i]['nombre']}\n- Categoría: {productos[i]['categoria']}\n- Precio: ${productos[i]['precio']}")
+                    print("-" * 20)
+                    encontrado += 1
+
+            if encontrado == 0:
+                print("No se encontró ningún producto con ese nombre.")
 
     elif opcion == "4":
-    
+        print("--- Eliminar producto ---")
+        if len(productos) == 0:
+            print("No hay productos ingresados.")
+        else:
+            for i in range(len(productos)):
+                print(f"ID: {i+1} - {productos[i]['nombre']} | Categoría: {productos[i]['categoria']} | Precio: ${productos[i]['precio']}")
+            
+            id_eliminar = input("Ingresá el ID del producto que querés eliminar: ").strip()
+
+            while not id_eliminar.isdigit() or int(id_eliminar) < 1 or int(id_eliminar) > len(productos):
+                print("ID inválido. Tenés que ingresar un número de ID válido.")
+                id_eliminar = input("Ingresá el ID del producto que querés eliminar: ").strip()
+
+            posicion = int(id_eliminar) - 1
+            eliminado = productos.pop(posicion)
+            print(f"El producto eliminado: {eliminado['nombre']}")
+            
     elif opcion == "5":
         print("Saliendo del sistema...")
         break
